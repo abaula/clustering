@@ -31,11 +31,17 @@
             this.panImage = new System.Windows.Forms.Panel();
             this.panMassLegend = new System.Windows.Forms.Panel();
             this.trbClusterDivider = new System.Windows.Forms.TrackBar();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panImage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbClusterDivider)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panImage
             // 
+            this.panImage.Controls.Add(this.menuStrip1);
             this.panImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panImage.Location = new System.Drawing.Point(58, 0);
             this.panImage.Name = "panImage";
@@ -61,6 +67,31 @@
             this.trbClusterDivider.Size = new System.Drawing.Size(908, 45);
             this.trbClusterDivider.TabIndex = 2;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(908, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -69,10 +100,15 @@
             this.Controls.Add(this.panImage);
             this.Controls.Add(this.trbClusterDivider);
             this.Controls.Add(this.panMassLegend);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Clustering";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
+            this.panImage.ResumeLayout(false);
+            this.panImage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbClusterDivider)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -83,6 +119,9 @@
         private System.Windows.Forms.Panel panImage;
         private System.Windows.Forms.Panel panMassLegend;
         private System.Windows.Forms.TrackBar trbClusterDivider;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
     }
 }
 

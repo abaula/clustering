@@ -79,5 +79,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Clustering.Clustering\Clustering.Clustering.csproj">
+      <Project>{b4ab0f0a-580d-4798-ad47-458cd41d5a2a}</Project>
+      <Name>Clustering.Clustering</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Clustering.Graph\Clustering.Graph.csproj">
+      <Project>{be9a982a-a0d9-43a5-a9f1-19389a0b9f2f}</Project>
+      <Name>Clustering.Graph</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
