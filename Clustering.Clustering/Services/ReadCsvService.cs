@@ -7,7 +7,7 @@ namespace Clustering.Clustering.Services
 {
     public static class ReadCsvService
     {
-        public static NodeData[] GetNodeData(string path)
+        public static IEnumerable<NodeData> GetNodeData(string path)
         {
             var result = new List<NodeData>();
 
@@ -20,12 +20,12 @@ namespace Clustering.Clustering.Services
                 result.Add(new NodeData
                 {
                     EmployeeId = arr[0],
-                    Point = new Point(Convert.ToDouble(arr[1]), Convert.ToDouble(arr[2])),
+                    DataPoint = new DataPoint(Convert.ToDouble(arr[1]), Convert.ToDouble(arr[2])),
                     IsFired = Convert.ToInt32(arr[3]) == 1
                 });
             }
 
-            return result.ToArray();
+            return result;
         }
     }
 }

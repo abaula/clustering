@@ -9,7 +9,7 @@ namespace Clustering.Clustering.Services
     {
         private VerticesComponentsService _verticesComponentsService;
 
-        public UndirectedGraph<NodeData> BuildMinimumSpanningTree(NodeData[] data)
+        public UndirectedGraph<NodeData> BuildMinimumSpanningTree(IEnumerable<NodeData> data)
         {
             var vertices = BuildVertices(data);
             _verticesComponentsService = new VerticesComponentsService(vertices.Length);
@@ -39,7 +39,7 @@ namespace Clustering.Clustering.Services
             graph.AddEdge(edge);
         }
 
-        private GVertex<NodeData>[] BuildVertices(NodeData[] data)
+        private GVertex<NodeData>[] BuildVertices(IEnumerable<NodeData> data)
         {
             return data
                 .Select((d, i) => new GVertex<NodeData>(i, d))
@@ -61,7 +61,7 @@ namespace Clustering.Clustering.Services
                 {
                     VertexA = data[i],
                     VertexB = data[j],
-                    Weight = data[i].Data.Point.GetDistance(data[j].Data.Point)
+                    Weight = data[i].Data.DataPoint.GetDistance(data[j].Data.DataPoint)
                 };
 
                 result.Add(edge);

@@ -37,6 +37,8 @@ namespace Clustering.Graph
                 : null;
         }
 
+        public IEnumerable<GEdge<TVertexData>> Edges => _edges.Values;
+        public IEnumerable<GVertex<TVertexData>> Vertices => _vertices.Values;
         public bool HasVertex(GVertex<TVertexData> vertex) => _vertices.ContainsKey(vertex.Id);
     }
 }

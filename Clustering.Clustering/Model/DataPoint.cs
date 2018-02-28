@@ -2,9 +2,9 @@
 
 namespace Clustering.Clustering.Model
 {
-    public class Point
+    public class DataPoint
     {
-        public Point(double x, double y)
+        public DataPoint(double x, double y)
         {
             X = x;
             Y = y;
@@ -13,7 +13,7 @@ namespace Clustering.Clustering.Model
         public double X { get; set; }
         public double Y { get; set; }
 
-        public double GetDistance(Point p)
+        public double GetDistance(DataPoint p)
         {
             return Math.Abs(p.X - X) + Math.Abs(p.Y - Y);
         }

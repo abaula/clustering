@@ -1,4 +1,6 @@
-﻿namespace Clustering.WinApp
+﻿using System.Windows.Forms;
+
+namespace Clustering.WinApp
 {
     partial class MainForm
     {
@@ -30,42 +32,79 @@
         {
             this.panImage = new System.Windows.Forms.Panel();
             this.panMassLegend = new System.Windows.Forms.Panel();
+            this.lblMinMass = new System.Windows.Forms.Label();
+            this.lblMaxMass = new System.Windows.Forms.Label();
             this.trbClusterDivider = new System.Windows.Forms.TrackBar();
+            this.panTop = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panImage.SuspendLayout();
+            this.panMassLegend.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbClusterDivider)).BeginInit();
+            this.panTop.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panImage
             // 
-            this.panImage.Controls.Add(this.menuStrip1);
             this.panImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panImage.Location = new System.Drawing.Point(58, 0);
+            this.panImage.Location = new System.Drawing.Point(58, 26);
             this.panImage.Name = "panImage";
-            this.panImage.Size = new System.Drawing.Size(908, 502);
+            this.panImage.Size = new System.Drawing.Size(908, 476);
             this.panImage.TabIndex = 0;
             this.panImage.Paint += new System.Windows.Forms.PaintEventHandler(this.panImage_Paint);
             // 
             // panMassLegend
             // 
+            this.panMassLegend.Controls.Add(this.lblMinMass);
+            this.panMassLegend.Controls.Add(this.lblMaxMass);
             this.panMassLegend.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panMassLegend.Location = new System.Drawing.Point(0, 0);
+            this.panMassLegend.Location = new System.Drawing.Point(0, 26);
             this.panMassLegend.Name = "panMassLegend";
-            this.panMassLegend.Size = new System.Drawing.Size(58, 547);
+            this.panMassLegend.Size = new System.Drawing.Size(58, 521);
             this.panMassLegend.TabIndex = 1;
             this.panMassLegend.Paint += new System.Windows.Forms.PaintEventHandler(this.panMassLegend_Paint);
-            this.panMassLegend.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panMassLegend_MouseClick);
+            // 
+            // lblMinMass
+            // 
+            this.lblMinMass.AutoSize = true;
+            this.lblMinMass.BackColor = System.Drawing.Color.Transparent;
+            this.lblMinMass.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblMinMass.ForeColor = System.Drawing.Color.White;
+            this.lblMinMass.Location = new System.Drawing.Point(0, 508);
+            this.lblMinMass.Name = "lblMinMass";
+            this.lblMinMass.Size = new System.Drawing.Size(0, 13);
+            this.lblMinMass.TabIndex = 1;
+            // 
+            // lblMaxMass
+            // 
+            this.lblMaxMass.AutoSize = true;
+            this.lblMaxMass.BackColor = System.Drawing.Color.Transparent;
+            this.lblMaxMass.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblMaxMass.ForeColor = System.Drawing.Color.White;
+            this.lblMaxMass.Location = new System.Drawing.Point(0, 0);
+            this.lblMaxMass.Name = "lblMaxMass";
+            this.lblMaxMass.Size = new System.Drawing.Size(0, 13);
+            this.lblMaxMass.TabIndex = 0;
             // 
             // trbClusterDivider
             // 
             this.trbClusterDivider.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.trbClusterDivider.Location = new System.Drawing.Point(58, 502);
+            this.trbClusterDivider.Maximum = 2000;
             this.trbClusterDivider.Name = "trbClusterDivider";
             this.trbClusterDivider.Size = new System.Drawing.Size(908, 45);
             this.trbClusterDivider.TabIndex = 2;
+            this.trbClusterDivider.Scroll += new System.EventHandler(this.trbClusterDivider_Scroll);
+            // 
+            // panTop
+            // 
+            this.panTop.Controls.Add(this.menuStrip1);
+            this.panTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panTop.Location = new System.Drawing.Point(0, 0);
+            this.panTop.Name = "panTop";
+            this.panTop.Size = new System.Drawing.Size(966, 26);
+            this.panTop.TabIndex = 3;
             // 
             // menuStrip1
             // 
@@ -73,8 +112,8 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(908, 24);
-            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Size = new System.Drawing.Size(966, 24);
+            this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
@@ -88,7 +127,7 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -100,13 +139,15 @@
             this.Controls.Add(this.panImage);
             this.Controls.Add(this.trbClusterDivider);
             this.Controls.Add(this.panMassLegend);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.panTop);
             this.Name = "MainForm";
             this.Text = "Clustering";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
-            this.panImage.ResumeLayout(false);
-            this.panImage.PerformLayout();
+            this.panMassLegend.ResumeLayout(false);
+            this.panMassLegend.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbClusterDivider)).EndInit();
+            this.panTop.ResumeLayout(false);
+            this.panTop.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -119,9 +160,12 @@
         private System.Windows.Forms.Panel panImage;
         private System.Windows.Forms.Panel panMassLegend;
         private System.Windows.Forms.TrackBar trbClusterDivider;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private Panel panTop;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private Label lblMaxMass;
+        private Label lblMinMass;
     }
 }
 

@@ -1,15 +1,19 @@
-﻿using Clustering.Graph;
+﻿using System.Linq;
+using Clustering.Graph;
 
 namespace Clustering.Clustering.Model
 {
     public class Cluster
     {
-        public Cluster()
+        public Cluster(UndirectedGraph<NodeData> graph)
         {
-            Graph = new UndirectedGraph<NodeData>();
+            Graph = graph;
+            Mass = Graph.Vertices.Count();
+            EdgesCount = Graph.Edges.Count();
         }
 
         public UndirectedGraph<NodeData> Graph { get; }
-        public double GraphMass { get; }
+        public double Mass { get; }
+        public int EdgesCount { get; }
     }
 }
