@@ -1,1 +1,1 @@
-!(https://github.com/abaula/clustering/blob/master/wiki/1.png)
+![alt text](https://github.com/abaula/clustering/blob/master/wiki/1.png)
