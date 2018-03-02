@@ -23,14 +23,14 @@ namespace Clustering.Graph
             _edges.Add(edge.Id, edge);
         }
 
-        public GVertex<TVertexData> GetVertex(int vertexId)
+        public GVertex<TVertexData> GetVertex(long vertexId)
         {
             return _vertices.ContainsKey(vertexId)
                 ? _vertices[vertexId]
                 : null;
         }
 
-        public GEdge<TVertexData> GetEdge(int edgeId)
+        public GEdge<TVertexData> GetEdge(long edgeId)
         {
             return _edges.ContainsKey(edgeId)
                 ? _edges[edgeId]

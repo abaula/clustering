@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
 using System.Windows.Forms;
 using Clustering.Clustering.Model;
 using Clustering.Clustering.Services;
@@ -12,16 +10,17 @@ namespace Clustering.WinApp
 {
     public partial class MainForm : Form
     {
-        private readonly ClusterCollection _clusterCollection;
         private readonly Color _colorFrom;
         private readonly Color _colorTo;
+        private ClusterHierarchy _clusterHierarchy;
+        private int _currentClusterLevel;
 
         public MainForm()
         {
             InitializeComponent();
-            _clusterCollection = new ClusterCollection();
-            _colorFrom = Color.DeepSkyBlue;
-            _colorTo = Color.Red;
+            _colorFrom = Color.Gray;
+            _colorTo = Color.White;
+            _currentClusterLevel = 0;
         }
 
         private void panMassLegend_Paint(object sender, PaintEventArgs e)
@@ -34,19 +33,25 @@ namespace Clustering.WinApp
 
         private void panImage_Paint(object sender, PaintEventArgs e)
         {
-            const int padding = 10;
-            var width = _clusterCollection.MaxDataPoint.X - _clusterCollection.MinDataPoint.X;
-            var height = _clusterCollection.MaxDataPoint.Y - _clusterCollection.MinDataPoint.Y;
-            var scaleX = (panImage.ClientRectangle.Width - padding * 2) / width;
-            var offsetX = _clusterCollection.MinDataPoint.X * scaleX - padding;
-            var scaleY = (panImage.ClientRectangle.Height - padding * 2) / height;
-            var offsetY = _clusterCollection.MinDataPoint.Y * scaleY - padding;
-            var gradient = CreateGradientForClusters(_clusterCollection.Clusters);
+            if (_clusterHierarchy?.Root?.Cluster == null)
+                return;
 
-            foreach (var cluster in _clusterCollection.Clusters)
+            var rootCluster = _clusterHierarchy.Root.Cluster;
+            const int padding = 10;
+
+            var width = rootCluster.MaxDataPoint.X - rootCluster.MinDataPoint.X;
+            var height = rootCluster.MaxDataPoint.Y - rootCluster.MinDataPoint.Y;
+            var scaleX = (panImage.ClientRectangle.Width - padding * 2) / width;
+            var offsetX = rootCluster.MinDataPoint.X * scaleX - padding;
+            var scaleY = (panImage.ClientRectangle.Height - padding * 2) / height;
+            var offsetY = rootCluster.MinDataPoint.Y * scaleY - padding;
+            var gradient = CreateGradient(rootCluster);
+            var items = _clusterHierarchy.GetClusterItemsForLevel(_currentClusterLevel);
+
+            foreach (var item in items)
             {
                 // Choose a color for the cluster.
-                var color = gradient[(int)cluster.Mass - 1];
+                var color = gradient[(int)item.Cluster.Mass - 1];
 
                 // Draw.
                 using (var brush = new SolidBrush(color))
@@ -54,7 +59,7 @@ namespace Clustering.WinApp
                     // ... edges
                     using (var pen = new Pen(brush, 1))
                     {
-                        foreach (var edge in cluster.Graph.Edges)
+                        foreach (var edge in item.Cluster.Graph.Edges)
                         {
                             var xA = Convert.ToSingle(edge.VertexA.Data.DataPoint.X * scaleX - offsetX);
                             var yA = Convert.ToSingle(edge.VertexA.Data.DataPoint.Y * scaleY - offsetY);
@@ -65,7 +70,7 @@ namespace Clustering.WinApp
                     }
 
                     // ... vertices
-                    foreach (var vertex in cluster.Graph.Vertices)
+                    foreach (var vertex in item.Cluster.Graph.Vertices)
                     {
                         var x = Convert.ToSingle(vertex.Data.DataPoint.X * scaleX - offsetX);
                         var y = Convert.ToSingle(vertex.Data.DataPoint.Y * scaleY - offsetY);
@@ -75,10 +80,10 @@ namespace Clustering.WinApp
             }
         }
 
-        private Color[] CreateGradientForClusters(ICollection<Cluster> clusters)
+        private Color[] CreateGradient(Cluster root)
         {
-            return clusters.Count > 0
-                ? CreateGradient((int) clusters.Max(c => c.Mass))
+            return root != null
+                ? CreateGradient((int)root.Mass)
                 : new [] {_colorFrom};
         }
 
@@ -122,10 +127,11 @@ namespace Clustering.WinApp
                 return;
 
             var data = ReadCsvService.GetNodeData(dialog.FileName);
-            _clusterCollection.AddClusterFromData(data);
-            lblMaxMass.Text = _clusterCollection.MaxMass.ToString("F");
-            lblMinMass.Text = _clusterCollection.MinMass.ToString("F");
-            trbClusterDivider.Maximum = _clusterCollection.EdgesCount;
+            var clusterHierarchyBuildService = new ClusterHierarchyBuildService();
+            _clusterHierarchy = clusterHierarchyBuildService.Build(data);
+            lblMaxMass.Text = _clusterHierarchy.Root.Cluster.Mass.ToString("F1");
+            lblMinMass.Text = (1.0).ToString("F1");
+            trbClusterDivider.Maximum = _clusterHierarchy.Root.Cluster.EdgesCount;
 
             panMassLegend.Invalidate();
             panMassLegend.Update();
@@ -135,7 +141,9 @@ namespace Clustering.WinApp
 
         private void trbClusterDivider_Scroll(object sender, EventArgs e)
         {
-
+            _currentClusterLevel = trbClusterDivider.Value;
+            panImage.Invalidate();
+            panImage.Update();
         }
     }
 }

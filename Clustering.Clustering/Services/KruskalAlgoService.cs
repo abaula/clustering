@@ -13,7 +13,7 @@ namespace Clustering.Clustering.Services
         {
             var vertices = BuildVertices(data);
             _verticesComponentsService = new VerticesComponentsService(vertices.Length);
-            var edges = BuildEdges(vertices).OrderBy(e => e.Weight).ToArray();
+            var edges = BuildEdges(vertices).OrderBy(e => e.Weight);
             var graph = new UndirectedGraph<NodeData>();
 
             foreach (var edge in edges)
@@ -36,6 +36,9 @@ namespace Clustering.Clustering.Services
             if(!graph.HasVertex(edge.VertexB))
                 graph.AddVertex(edge.VertexB);
 
+            edge.VertexA.AddEdge(edge);
+            edge.VertexB.AddEdge(edge);
+
             graph.AddEdge(edge);
         }
 
@@ -57,12 +60,10 @@ namespace Clustering.Clustering.Services
                 if (i == j)
                     continue;
 
-                var edge = new GEdge<NodeData>(cnt++)
-                {
-                    VertexA = data[i],
-                    VertexB = data[j],
-                    Weight = data[i].Data.DataPoint.GetDistance(data[j].Data.DataPoint)
-                };
+                var edge = new GEdge<NodeData>(cnt++,
+                    data[i],
+                    data[j],
+                    data[i].Data.DataPoint.GetDistance(data[j].Data.DataPoint));
 
                 result.Add(edge);
             }

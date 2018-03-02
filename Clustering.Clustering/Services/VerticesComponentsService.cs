@@ -28,6 +28,7 @@ namespace Clustering.Clustering.Services
             var vertAComponent = _verticesComponents[edge.VertexA.Id];
             var vertBComponent = _verticesComponents[edge.VertexB.Id];
 
+            // Присваиваем наименьший номер компонента, просто для красоты - на алгоритм это не влияет.
             if (vertAComponent < vertBComponent)
                 SwitchComponent(vertBComponent, vertAComponent);
             else

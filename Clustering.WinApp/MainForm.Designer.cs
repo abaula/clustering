@@ -47,6 +47,7 @@ namespace Clustering.WinApp
             // 
             // panImage
             // 
+            this.panImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panImage.Location = new System.Drawing.Point(58, 26);
             this.panImage.Name = "panImage";
@@ -56,6 +57,8 @@ namespace Clustering.WinApp
             // 
             // panMassLegend
             // 
+            this.panMassLegend.BackColor = System.Drawing.Color.Gray;
+            this.panMassLegend.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panMassLegend.Controls.Add(this.lblMinMass);
             this.panMassLegend.Controls.Add(this.lblMaxMass);
             this.panMassLegend.Dock = System.Windows.Forms.DockStyle.Left;
@@ -71,7 +74,7 @@ namespace Clustering.WinApp
             this.lblMinMass.BackColor = System.Drawing.Color.Transparent;
             this.lblMinMass.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblMinMass.ForeColor = System.Drawing.Color.White;
-            this.lblMinMass.Location = new System.Drawing.Point(0, 508);
+            this.lblMinMass.Location = new System.Drawing.Point(0, 506);
             this.lblMinMass.Name = "lblMinMass";
             this.lblMinMass.Size = new System.Drawing.Size(0, 13);
             this.lblMinMass.TabIndex = 1;
@@ -108,26 +111,29 @@ namespace Clustering.WinApp
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.DarkGray;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(966, 24);
             this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem});
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
             // 
+            this.openToolStripMenuItem.BackColor = System.Drawing.Color.Gray;
+            this.openToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -135,6 +141,7 @@ namespace Clustering.WinApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(966, 547);
             this.Controls.Add(this.panImage);
             this.Controls.Add(this.trbClusterDivider);
