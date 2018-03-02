@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 using Clustering.Clustering.Model;
 using Clustering.Clustering.Services;
@@ -10,25 +10,13 @@ namespace Clustering.WinApp
 {
     public partial class MainForm : Form
     {
-        private readonly Color _colorFrom;
-        private readonly Color _colorTo;
         private ClusterHierarchy _clusterHierarchy;
         private int _currentClusterLevel;
 
         public MainForm()
         {
             InitializeComponent();
-            _colorFrom = Color.Gray;
-            _colorTo = Color.White;
             _currentClusterLevel = 0;
-        }
-
-        private void panMassLegend_Paint(object sender, PaintEventArgs e)
-        {
-            using (var brush = new LinearGradientBrush(panMassLegend.ClientRectangle, _colorTo, _colorFrom, LinearGradientMode.Vertical))
-            {
-                e.Graphics.FillRectangle(brush, panMassLegend.ClientRectangle);
-            }
         }
 
         private void panImage_Paint(object sender, PaintEventArgs e)
@@ -45,13 +33,15 @@ namespace Clustering.WinApp
             var offsetX = rootCluster.MinDataPoint.X * scaleX - padding;
             var scaleY = (panImage.ClientRectangle.Height - padding * 2) / height;
             var offsetY = rootCluster.MinDataPoint.Y * scaleY - padding;
-            var gradient = CreateGradient(rootCluster);
-            var items = _clusterHierarchy.GetClusterItemsForLevel(_currentClusterLevel);
+            var items = _clusterHierarchy.GetClusterItemsForLevel(_currentClusterLevel)
+                .OrderByDescending(it => it.Cluster.Mass);
+
+            var clusterNumber = 1;
 
             foreach (var item in items)
             {
                 // Choose a color for the cluster.
-                var color = gradient[(int)item.Cluster.Mass - 1];
+                var color = GetRainbowColor(clusterNumber++);
 
                 // Draw.
                 using (var brush = new SolidBrush(color))
@@ -80,40 +70,31 @@ namespace Clustering.WinApp
             }
         }
 
-        private Color[] CreateGradient(Cluster root)
+        private Color GetRainbowColor(int number)
         {
-            return root != null
-                ? CreateGradient((int)root.Mass)
-                : new [] {_colorFrom};
-        }
-
-        private Color[] CreateGradient(int size)
-        {
-            var result = new Color[size];
-
-            int rMin = _colorFrom.R;
-            int rMax = _colorTo.R;
-            int gMin = _colorFrom.G;
-            int gMax = _colorTo.G;
-            int bMin = _colorFrom.B;
-            int bMax = _colorTo.B;
-
-            for (var i = 0; i < size; i++)
+            switch (number)
             {
-                var rAverage = rMin + (rMax - rMin) * i / size;
-                var gAverage = gMin + (gMax - gMin) * i / size;
-                var bAverage = bMin + (bMax - bMin) * i / size;
-                result[i] = Color.FromArgb(rAverage, gAverage, bAverage);
+                case 1:
+                    return Color.Red;
+                case 2:
+                    return Color.Orange;
+                case 3:
+                    return Color.Yellow;
+                case 4:
+                    return Color.Green;
+                case 5:
+                    return Color.LightSkyBlue;
+                case 6:
+                    return Color.Blue;
+                case 7:
+                    return Color.Magenta;
+                default:
+                    return Color.LightGray;
             }
-
-            return result;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            panMassLegend.Invalidate();
-            panMassLegend.Update();
-
             panImage.Invalidate();
             panImage.Update();
         }
@@ -129,12 +110,8 @@ namespace Clustering.WinApp
             var data = ReadCsvService.GetNodeData(dialog.FileName);
             var clusterHierarchyBuildService = new ClusterHierarchyBuildService();
             _clusterHierarchy = clusterHierarchyBuildService.Build(data);
-            lblMaxMass.Text = _clusterHierarchy.Root.Cluster.Mass.ToString("F1");
-            lblMinMass.Text = (1.0).ToString("F1");
             trbClusterDivider.Maximum = _clusterHierarchy.Root.Cluster.EdgesCount;
 
-            panMassLegend.Invalidate();
-            panMassLegend.Update();
             panImage.Invalidate();
             panImage.Update();
         }

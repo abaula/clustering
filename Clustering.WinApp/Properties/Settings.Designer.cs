@@ -25,7 +25,7 @@ namespace Clustering.WinApp.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Downloads\\data_current.csv")]
+        [global::System.Configuration.DefaultSettingValueAttribute("data.csv")]
         public string CsvFilePath {
             get {
                 return ((string)(this["CsvFilePath"]));
