@@ -15,7 +15,7 @@ namespace Clustering.Clustering.Model
 
         public double GetDistance(DataPoint p)
         {
-            return Math.Abs(p.X - X) + Math.Abs(p.Y - Y);
+            return Math.Sqrt(Math.Pow(p.X - X, 2) + Math.Pow(p.Y - Y, 2));
         }
     }
 }
