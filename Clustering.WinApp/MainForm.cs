@@ -87,7 +87,7 @@ namespace Clustering.WinApp
                 case 6:
                     return Color.Blue;
                 case 7:
-                    return Color.Magenta;
+                    return Color.Purple;
                 default:
                     return Color.LightGray;
             }
