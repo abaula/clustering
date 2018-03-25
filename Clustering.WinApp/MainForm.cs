@@ -122,5 +122,17 @@ namespace Clustering.WinApp
             panImage.Invalidate();
             panImage.Update();
         }
+
+        private void autoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_clusterHierarchy == null)
+                return;
+
+            var avgWeight = _clusterHierarchy.Root.Cluster.Graph.Edges.Average(edg => edg.Weight);
+            _currentClusterLevel = _clusterHierarchy.GetMaxClusterLevelForCuttingEdgeWeight(avgWeight);
+            trbClusterDivider.Value = _currentClusterLevel;
+            panImage.Invalidate();
+            panImage.Update();
+        }
     }
 }

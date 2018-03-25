@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using Clustering.Clustering.Helpers;
 using Clustering.Clustering.Model;
+using Clustering.Graph;
 
 namespace Clustering.Clustering.Services
 {
     public static class FindMaximumEdgeService
     {
-        public static (ClusterHierarchyItem hierarchyItem, long edgeId)
+        public static (ClusterHierarchyItem hierarchyItem, GEdge<NodeData> edge)
             FindWithMaximumEdgeWeight(IEnumerable<ClusterHierarchyItem> items)
         {
             ClusterHierarchyItem maxItem = null;
-            long maxEdgeId = 0;
+            GEdge<NodeData> maxEdge = null;
             var maxEdgeWeight = double.MinValue;
 
             foreach (var item in items)
@@ -27,12 +28,12 @@ namespace Clustering.Clustering.Services
                     {
                         maxItem = item;
                         maxEdgeWeight = edge.Weight;
-                        maxEdgeId = edge.Id;
+                        maxEdge = edge;
                     }
                 }
             }
 
-            return (maxItem, maxEdgeId);
+            return (maxItem, maxEdge);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Clustering.Clustering.Model
@@ -15,6 +16,31 @@ namespace Clustering.Clustering.Model
             var list = new List<ClusterHierarchyItem>();
             HandleItem(Root, level, list);
             return list.ToArray();
+        }
+
+        /// <summary>
+        /// Возвращает самый нижний уровень, у которого вес больше или равен указанному.
+        /// </summary>
+        public int GetMaxClusterLevelForCuttingEdgeWeight(double weight)
+        {
+            return HandleItem(Root, weight);
+        }
+
+        private int HandleItem(ClusterHierarchyItem item, double weight)
+        {
+            if (item.Children == null
+                || !item.Children.Any()
+                || item.Children.Any(ch => ch.CuttingEdgeWeight < weight))
+            {
+                return item.Level;
+            }
+
+            var level = int.MinValue;
+
+            foreach (var child in item.Children)
+                level = Math.Max(level, HandleItem(child, weight));
+
+            return level;
         }
 
         private void HandleItem(ClusterHierarchyItem item, int level, List<ClusterHierarchyItem> list)

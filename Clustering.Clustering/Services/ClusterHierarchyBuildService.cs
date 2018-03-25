@@ -23,20 +23,21 @@ namespace Clustering.Clustering.Services
                 if (items.All(it => it.Cluster.EdgesCount == 0))
                     break;
 
-                (var hierarchyItem, var edgeId) = FindMaximumEdgeService.FindWithMaximumEdgeWeight(items);
-                (var clusterA, var clusterB) = ClusterSplitService.Split(hierarchyItem.Cluster, edgeId);
-                AddChildren(hierarchyItem, i + 1, clusterA, clusterB);
+                (var hierarchyItem, var edge) = FindMaximumEdgeService.FindWithMaximumEdgeWeight(items);
+                (var clusterA, var clusterB) = ClusterSplitService.Split(hierarchyItem.Cluster, edge.Id);
+                AddChildren(hierarchyItem, i + 1, edge.Weight, clusterA, clusterB);
                 i++;
             }
 
             return hierarchy;
         }
 
-        private static void AddChildren(ClusterHierarchyItem parent, int level, Cluster clusterA, Cluster clusterB)
+        private static void AddChildren(ClusterHierarchyItem parent, int level, double cuttingEdgeWeight, Cluster clusterA, Cluster clusterB)
         {
             var childA = new ClusterHierarchyItem
             {
                 Level = level,
+                CuttingEdgeWeight = cuttingEdgeWeight,
                 Parent = parent,
                 Cluster = clusterA,
                 Children = null
@@ -44,6 +45,7 @@ namespace Clustering.Clustering.Services
             var childB = new ClusterHierarchyItem
             {
                 Level = level,
+                CuttingEdgeWeight = cuttingEdgeWeight,
                 Parent = parent,
                 Cluster = clusterB,
                 Children = null
@@ -60,6 +62,7 @@ namespace Clustering.Clustering.Services
             return new ClusterHierarchyItem
             {
                 Level = 0,
+                CuttingEdgeWeight = 0,
                 Parent = null,
                 Children = null,
                 Cluster = new Cluster(graph)
