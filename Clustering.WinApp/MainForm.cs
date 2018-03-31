@@ -128,11 +128,26 @@ namespace Clustering.WinApp
             if (_clusterHierarchy == null)
                 return;
 
-            var avgWeight = _clusterHierarchy.Root.Cluster.Graph.Edges.Average(edg => edg.Weight);
-            _currentClusterLevel = _clusterHierarchy.GetMaxClusterLevelForCuttingEdgeWeight(avgWeight);
+            var cutWeight = GetCuttingWeight();
+
+            _currentClusterLevel = _clusterHierarchy.GetMaxClusterLevelForCuttingEdgeWeight(cutWeight);
             trbClusterDivider.Value = _currentClusterLevel;
             panImage.Invalidate();
             panImage.Update();
+        }
+
+        /// <summary>
+        /// Для определения максимального веса ребра, которое не удаляется - используем нормальное распределение.
+        /// Находим вес крайнего правого ребра нормального распределения, которое симметрично самому малому ребру.
+        /// </summary>
+        private double GetCuttingWeight()
+        {
+            var avgWeight = _clusterHierarchy.Root.Cluster.Graph.Edges.Average(edg => edg.Weight);
+            var minWeight = _clusterHierarchy.Root.Cluster.Graph.Edges.Min(edg => edg.Weight);
+            var delta = minWeight - avgWeight;
+            var cutWeight = avgWeight + Math.Abs(delta);
+
+            return cutWeight;
         }
     }
 }
