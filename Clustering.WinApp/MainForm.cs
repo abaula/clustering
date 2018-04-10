@@ -149,5 +149,30 @@ namespace Clustering.WinApp
 
             return cutWeight;
         }
+
+        /// <summary>
+        /// Сохранить кластеры.
+        /// </summary>
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialog = new SaveFileDialog
+            {
+                CheckPathExists = true,
+                OverwritePrompt = true,
+                DefaultExt = "csv",
+                Filter = @"Csv (MS-DOS) files (*.csv)|*.csv"
+        };
+            var result = dialog.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            var filePath = dialog.FileName;
+
+            var items = _clusterHierarchy.GetClusterItemsForLevel(_currentClusterLevel)
+                .OrderByDescending(it => it.Cluster.Mass);
+
+            WriteCsvService.SaveNodeData(items, filePath);
+        }
     }
 }
